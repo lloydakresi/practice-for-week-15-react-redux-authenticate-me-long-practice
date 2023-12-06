@@ -1,6 +1,13 @@
+import LoginFormPage from "./store/components/LoginFormPage";
+import { Route } from "react-router-dom";
+
 function App() {
   return (
-    <h1>Hello from App</h1>
+    <>
+    <Route path="/login">
+            <LoginFormPage />
+    </Route>
+    </>
   );
 }
 
