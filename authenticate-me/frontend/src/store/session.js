@@ -31,6 +31,40 @@ export const login = (user) => async (dispatch) => {
     return response;
 }
 
+
+export const signup = (user) => async (dispatch) => {
+  const { username, email, password } = user;
+
+  try {
+    const response = await csrfFetch('api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      // Handle the case where the response is not OK (e.g., server error)
+      const data = await response.json();
+      throw new Error(data.message || 'Failed to sign up');
+    }
+
+    const data = await response.json();
+    dispatch(setUser(data.user));
+
+    return response;
+  } catch (error) {
+    console.error('Error during signup:', error.message);
+    throw error; // Rethrow the error for the calling code to handle if needed
+  }
+};
+
+
 export const restoreUser = (user)=> async(dispatch)=>{
   const res = await csrfFetch(
     '/api/session',{
